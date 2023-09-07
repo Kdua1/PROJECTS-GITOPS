@@ -26,7 +26,6 @@ on:
            - dev
            - stg
            - prd
-  
 jobs:
     print-tag:
       runs-on: ubuntu-latest
