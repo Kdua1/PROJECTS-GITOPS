@@ -20,10 +20,10 @@ Argocd will be use as an open-source gitops continuous delivery tool and monitor
 Github Action will be use as CI/CD platform that allows us to automate deployment pipeline.
 Git will be use as distributed version control tool for source code management and also for tracking changes.
 AWS as our cloud provider
-Kops will be use as our container managment platform
-Docker will be use as our containalization tool
-Helm as our monitoring tool
-Terraform as our provisioning tool
+Kops will be use as our container managment platform.
+Docker will be use as our containalization tool.
+Helm will be use to automates the creation and deployment of kops application by combining the configuration files into a single reusable package.
+Terraform as our provisioning tool.
 
 This are the steps for the project.
 
