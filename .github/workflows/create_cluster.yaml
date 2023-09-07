@@ -15,9 +15,7 @@ on:
           required: true
           type: choice
           option:
-           - bk-store
-           - sk-store
-           - ck-store
+           - fusion1-state-tf
         environment:
           description: 'Environment to run tests against'
           type: choice
