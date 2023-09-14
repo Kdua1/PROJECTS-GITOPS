@@ -1,33 +1,41 @@
 name: create kops cluster
 
-on:
-    workflow_dispatch:
-      inputs:
-        cluster_name:
-          description: 'name to cluster'
-          required: true
-          default: 'warning'
-          type: choice
-          options:
-          - kds.com
-        kops_state_store:
-          description: 'bucket to use'
-          required: true
-          type: choice
-          option:
-           - fusion1-state-tf
-        environment:
-          description: 'Environment to run tests against'
-          type: choice
-          required: true
-          option:
-           - dev
-           - stg
-           - prd
+on: push
+    # workflow_dispatch:
+    #   inputs:
+    #     cluster_name:
+    #       description: 'name to cluster'
+    #       required: true
+    #       default: 'warning'
+    #       type: choice
+    #       options:
+    #       - kds.com
+    #     kops_state_store:
+    #       description: 'bucket to use'
+    #       required: true
+    #       type: choice
+    #       option:
+    #        - fusion1-state-tf
+    #        - bk-store
+    #     environment:
+    #       description: 'Environment to run tests against'
+    #       type: choice
+    #       required: true
+    #       option:
+    #        - dev
+    #        - stg
+    #        - prd
 jobs:
-    print-tag:
+    create-cluster:
       runs-on: ubuntu-latest
-      if:  ${{ inputs.print_tags }} 
       steps:
-        - name: Print the input tag to STDOUT
-          run: echo  The tags are ${{ inputs.tags }} 
+        - name: Checkout
+          uses: actions/checkout@v4
+
+        - name: install kops
+          run: |
+               curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
+               chmod +x kops
+               sudo mv kops /usr/local/bin/kops
+               kops
+           

@@ -31,17 +31,12 @@ Step 1
 
 * Create a Github repo
 * Clone the repo
-* Generate the terraform configuration
 
 Step 2
 
 * Create the directory and files in your clone repo
  - .github/workflows
      create_ cluster.yaml
- - Terraform 
-    Provider.tf
-    variable.tf
-    main.tf
 
  Write some content in the README.md file.
 
