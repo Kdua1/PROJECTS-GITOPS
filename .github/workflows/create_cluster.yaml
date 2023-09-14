@@ -41,7 +41,7 @@ jobs:
 
         - name: Creating the cluster
           run: |
-                export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}
+                export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}"
                 export CONTROL_PLANE_SIZE="c5.large"
                 export NODE_SIZE="m5.large"
                 export ZONES="us-east-1a,us-east-1b,us-east-1c"
