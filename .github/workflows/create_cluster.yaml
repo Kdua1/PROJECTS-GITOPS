@@ -1,30 +1,30 @@
 name: create kops cluster
 
-on: push
-    # workflow_dispatch:
-    #   inputs:
-    #     cluster_name:
-    #       description: 'name to cluster'
-    #       required: true
-    #       default: 'warning'
-    #       type: choice
-    #       options:
-    #       - kds.com
-    #     kops_state_store:
-    #       description: 'bucket to use'
-    #       required: true
-    #       type: choice
-    #       option:
-    #        - fusion1-state-tf
-    #        - bk-store
-    #     environment:
-    #       description: 'Environment to run tests against'
-    #       type: choice
-    #       required: true
-    #       option:
-    #        - dev
-    #        - stg
-    #        - prd
+on:
+    workflow_dispatch:
+      inputs:
+        cluster_name:
+          description: 'name to cluster'
+          required: true
+          default: 'warning'
+          type: choice
+          options:
+          - kds.com
+        kops_state_store:
+          description: 'bucket to use'
+          required: true
+          type: choice
+          options:
+           - fusion1-state-tf
+           - bk-store
+#         environment:
+#           description: 'Environment to run tests against'
+#           type: choice
+#           required: true
+#           option:
+#            - dev
+#            - stg
+#            - prd
 jobs:
     create-cluster:
       runs-on: ubuntu-latest
@@ -37,5 +37,26 @@ jobs:
                curl -Lo kops https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
                chmod +x kops
                sudo mv kops /usr/local/bin/kops
-               kops
-           
+               
+
+        - name: Creating the cluster
+          run: |
+                export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}
+                export CONTROL_PLANE_SIZE="c5.large"
+                export NODE_SIZE="m5.large"
+                export ZONES="us-east-1a,us-east-1b,us-east-1c"
+                kops create cluster ${{ inputs.cluster_name }} \
+                --node-count 3 \
+                --zones $ZONES \
+                --node-size $NODE_SIZE \
+                --control-plane-size $CONTROL_PLANE_SIZE \
+                --control-plane-zones $ZONES \
+                --networking cilium \
+                --topology private \
+                --bastion="true" \
+                --yes
+
+        - name: Build cluster
+          run: |
+                kops update cluster --name ${{ inputs.cluster_name }} --state $KOPS_STATE_STORE --yes --admin
+
