@@ -20,7 +20,6 @@ on:
 #         environment:
 #           description: 'Environment to run tests against'
 #           type: choice
-#           required: true
 #           option:
 #            - dev
 #            - stg
