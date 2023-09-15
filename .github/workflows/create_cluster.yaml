@@ -32,7 +32,7 @@ jobs:
           uses: actions/checkout@v4
 
         - name: AWS configure
-          uses: actions/aws-credentials@v1
+          uses: aws-actions/configure-aws-credentials@v1
           with:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -61,7 +61,7 @@ jobs:
                 --topology private \
                 --bastion="true" \
                 --yes
-                
+
         - name: Export KOPS_STATE_STORE
           run: |
                 export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}"
