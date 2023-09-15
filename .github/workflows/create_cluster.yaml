@@ -9,21 +9,21 @@ on:
           default: 'warning'
           type: choice
           options:
-          - kds.com
+            - kds.com
         kops_state_store:
           description: 'bucket to use'
           required: true
           type: choice
           options:
-           - fusion1-state-tf
-           - bk-store
+            - fusion1-state-tf
+            - bk-store
 #         environment:
 #           description: 'Environment to run tests against'
 #           type: choice
 #           option:
-#            - dev
-#            - stg
-#            - prd
+#             - dev
+#             - stg
+#             - prd
 jobs:
     create-cluster:
       runs-on: ubuntu-latest
@@ -61,7 +61,11 @@ jobs:
                 --topology private \
                 --bastion="true" \
                 --yes
-
+                
+        - name: Export KOPS_STATE_STORE
+          run: |
+                export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}"
+              
         - name: Build cluster
           run: |
                 kops update cluster --name ${{ inputs.cluster_name }} --state $KOPS_STATE_STORE --yes --admin
