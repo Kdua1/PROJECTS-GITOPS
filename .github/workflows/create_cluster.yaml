@@ -62,11 +62,13 @@ jobs:
                 --bastion="true" \
                 --yes
 
-        - name: Export KOPS_STATE_STORE
-          run: |
-                export KOPS_STATE_STORE="s3://${{ inputs.kops_state_store }}"
               
         - name: Build cluster
           run: |
                 kops update cluster --name ${{ inputs.cluster_name }} --state $KOPS_STATE_STORE --yes --admin
+
+      #  - name: Validate cluster
+      #   run: 
+      #         kops validate cluster --name ${{ inputs.cluster_name }} --state $KOPS_STATE_STORE --yes --admin
+
 
